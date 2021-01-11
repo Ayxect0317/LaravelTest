@@ -3,6 +3,8 @@
 // 使用するコントローラーやモデルのパスを入力
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
+use App\Models\Post;
+
 /*
  * --------------------------------------------------------------------------
  * Web Routes
@@ -26,4 +28,11 @@ Route::get('/hello', function(){
   return 'こんにちは';
 });
 
-Route::get('/test', [TestsController::class, 'test']);
+// Route::get('/test', [TestsController::class, 'test']);
+
+Route::get('/test', function(){
+  $posts = Post::all();
+  foreach($posts as $post){
+    return $post->title;
+  }
+});
