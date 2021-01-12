@@ -3,6 +3,7 @@
 // 使用するコントローラーやモデルのパスを入力
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
+use App\Models\Address;
 use App\Models\Post;
 
 /*
@@ -35,4 +36,21 @@ Route::get('/test', function(){
   foreach($posts as $post){
     return $post->title;
   }
+});
+
+/*
+ * 1:1 リレーションのチェック
+ */
+Route::get('/{id}/address1', function($id){
+    // Postモデル (postsテーブル) のうち、idが %id のレコードをすべて取得する
+    $post=Post::find($id);
+    // 上記で取得したレコードのAddressモデル (addressesテーブル) のaddressカラムを取得する
+    return "ユーザー番号".$id."番の住所:".$post->address->address;
+});
+
+Route::get('/{id}/address2', function($id){
+    // Addressモデル (addressesテーブル) のうち、idが %id のレコードをすべて取得する
+    $address=Address::find($id);
+    // 上記で取得したレコードのPostモデル (postsテーブル) のtitleカラムを取得する
+    return "アドレス番号".$id."のユーザーのタイトルは「".$address->post->title."」です。";
 });
