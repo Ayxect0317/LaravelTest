@@ -4,6 +4,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
 use App\Models\Address;
+use App\Models\Division;
+use App\Models\Employee;
 use App\Models\Post;
 
 /*
@@ -52,5 +54,19 @@ Route::get('/{id}/address2', function($id){
     // Addressモデル (addressesテーブル) のうち、idが %id のレコードをすべて取得する
     $address=Address::find($id);
     // 上記で取得したレコードのPostモデル (postsテーブル) のtitleカラムを取得する
+    // (Addressモデルのpost() を呼び出している)
     return "アドレス番号".$id."のユーザーのタイトルは「".$address->post->title."」です。";
+});
+
+/*
+ * 1:N リレーションのチェック
+ */
+Route::get('/division', function(){
+    // Divisionモデル (divisionsテーブル) のうち、idが1のレコードをすべて取得する
+    $division = Division::find(1);
+    // 上記で取得したレコードのEmployeeモデル (employeesテーブル) のnameカラムを取得する
+    // (Divisionモデルのemployees() を呼び出している)
+    foreach($division->employees as $employee){
+      echo $employee->name.'<br>';
+  }
 });
